@@ -22,3 +22,8 @@ class Appointment(models.Model):
     services = models.ManyToManyField(Service)
     total_cost = models.DecimalField(max_digits=8, decimal_places=2)
 
+
+class PhotoReport(models.Model):
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
+    before_photo = models.ImageField(upload_to='before_photos/')
+    after_photo = models.ImageField(upload_to='after_photos/')
