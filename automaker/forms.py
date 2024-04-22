@@ -1,5 +1,5 @@
 from django import forms
-from .models import Client, Appointment, PhotoReport
+from .models import Client, Appointment, PhotoReport, Master
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -11,6 +11,10 @@ class AppointmentForm(forms.ModelForm):
         model = Appointment
         fields = ['client', 'master', 'services', 'total_cost']
 
+class MasterForm(forms.ModelForm):  
+    class Meta:
+        model = Master
+        fields = ['name', 'experience', 'certification', 'specialization']
 
 class PhotoReportForm(forms.ModelForm):
     class Meta:

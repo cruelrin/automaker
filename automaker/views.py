@@ -1,28 +1,38 @@
-# views.py
-
 from django.shortcuts import render, redirect
-from .forms import ClientForm, AppointmentForm, PhotoReportForm
+from .forms import ClientForm, AppointmentForm, MasterForm, PhotoReportForm
+from .models import Client, Appointment, Master, Service, PhotoReport
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit
 
-def register_client(request):
-    if request.method == 'POST':
-        form = ClientForm(request.POST)
-        if form.is_valid():
-            client = form.save()
-            return redirect('appointment')
-    else:
-        form = ClientForm()
-    return render(request, 'register_client.html', {'form': form})
 
-def make_appointment(request):
+def create_appointment(request):
     if request.method == 'POST':
         form = AppointmentForm(request.POST)
         if form.is_valid():
             appointment = form.save()
-            return redirect('appointment_success')
+            return redirect('list_appointments')
     else:
         form = AppointmentForm()
-    return render(request, 'make_appointment.html', {'form': form})
+    return render(request, 'create_appointment.html', {'form': form})
 
+def detail_appointment(request, appointment_id):
+    appointment = Appointment.objects.get(id=appointment_id)
+    return render(request, 'detail_appointment.html', {'appointment': appointment})
+
+def list_appointments(request):
+    appointments = Appointment.objects.all()
+    return render(request, 'list_appointments.html', {'appointments': appointments})
+
+def update_appointment(request, appointment_id):
+    appointment = Appointment.objects.get(id=appointment_id)
+    if request.method == 'POST':
+        form = AppointmentForm(request.POST, instance=appointment)
+        if form.is_valid():
+            form.save()
+            return redirect('list_appointments')
+    else:
+        form = AppointmentForm(instance=appointment)
+    return render(request, 'update_appointment.html', {'form': form})
 
 def make_appointment(request):
     if request.method == 'POST':
@@ -38,3 +48,22 @@ def make_appointment(request):
         appointment_form = AppointmentForm()
         photo_report_form = PhotoReportForm()
     return render(request, 'make_appointment.html', {'appointment_form': appointment_form, 'photo_report_form': photo_report_form})
+
+def manage_masters(request):
+    masters = Master.objects.all()
+    if request.method == 'POST':
+        form = MasterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('manage_masters')
+    else:
+        form = MasterForm()
+    return render(request, 'manage_masters.html', {'masters': masters, 'form': form})
+
+def services(request):
+    services = Service.objects.all()
+    return render(request, 'services.html', {'services': services})
+
+def view_photo_report(request, photo_id):
+    photo = PhotoReport.objects.get(id=photo_id)
+    return render(request, 'view_photo_report.html', {'photo': photo})

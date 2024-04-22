@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="mx-auto">
+  <h1 class="text-center">Photo Report</h1>
+</div>
+
+<!-- Отображение фотографий до и после -->
+<div class="row">
+  <div class="col-md-6">
+    <h3>Before</h3>
+    <img src="{{ photo.before_photo.url }}" alt="Before" class="img-fluid">
+  </div>
+  <div class="col-md-6">
+    <h3>After</h3>
+    <img src="{{ photo.after_photo.url }}" alt="After" class="img-fluid">
+  </div>
+</div>
+
+<!-- Дополнительная информация о фотоотчете -->
+<div class="mt-3">
+  <h4>Description:</h4>
+  <p>{{ photo.description }}</p>
+</div>
+
+{% endblock content %}
